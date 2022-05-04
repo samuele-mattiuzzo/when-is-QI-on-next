@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When is QI on next?</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+var opts = {
+    'method': 'GET',
+    'mode': 'no-cors'
+}
+const urls = [
+    ["QI", "https://uktvplay.uktv.co.uk/shows/qi/watch-online", ".vod-episode__standout > p", {}],
+    ["QI XL", "https://uktvplay.uktv.co.uk/shows/qi-xl/watch-online", ".vod-episode__standout > p", {}],
+    ["QI", "https://www.bbc.co.uk/programmes/b006ml0g/broadcasts/upcoming", ".highlight-box-wrapper", opts],
+    ["QI XL", "https://www.bbc.co.uk/programmes/b00qff3s/broadcasts/upcoming", ".highlight-box-wrapper", opts]
+];
+
+
+
+urls.forEach(function(url_group) {
+  fetch(url_group[1], url_group[3])
+    .then((response) => {
+        // handle the response
+        return response.text();
+    })
+    .then((html) => {
+        // Initialize the DOM parser
+        var parser = new DOMParser();
+
+        // Parse the text
+        var doc = parser.parseFromString(html, "text/html");
+        var episodes = doc.querySelectorAll(url_group[2]);
+
+        episodes.forEach(function(episode) {
+            console.log(url_group[0] + ' ' + episode.innerText);
+        });
+    })
+    .catch(function(error) {
+    });
+});
+</script>
+</html>
